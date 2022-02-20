@@ -1,7 +1,7 @@
-interface SVGProps {
-  width: string;
-  height: string;
-  className: string;
+export interface SVGProps {
+  width?: string;
+  height?: string;
+  className?: string;
 }
 
 export const SpaceMission: React.FC<SVGProps> = ({

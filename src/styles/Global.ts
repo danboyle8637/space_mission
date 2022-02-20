@@ -1,14 +1,18 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from "styled-components";
 
 const Global = createGlobalStyle`
-  @font-face {
-    font-family: 'RobotoBold';
-    src: url('/fonts/Roboto-Black.woff2') format('woff2');
-    font-display: fallback;
+  :root {
+    --base-blue: #1A1A2E;
+    --dark-blue: #0F0F1A;
+    --accent-pink: #B983FF;
+    --accent-purple: #94B3FD;
+    --accent-blue: #94DAFF;
+    --accent-teal: #99FEFF;
   }
 
   html {
     box-sizing: border-box;
+    font-size: 62.5%;
   }
 
   *,
@@ -20,7 +24,7 @@ const Global = createGlobalStyle`
   body {
     margin: 0;
     padding: 0;
-    background: #f8f8f8;
+    background: var(--base-blue);
     width: 100%;
     height: 100%;
   }
@@ -33,20 +37,20 @@ const Global = createGlobalStyle`
   h1 {
     margin: 0;
     padding: 0;
-    font-family: RobotoBold, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 40px;
   }
 
   h3, h4, h5 {
     margin: 0;
     padding: 0;
-    font-family: RobotoBold, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
 
   p {
     margin: 0;
     padding: 0;
-    font-family: sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
 
   button {
@@ -54,6 +58,6 @@ const Global = createGlobalStyle`
     padding: 0;
   }
 
-`
+`;
 
-export default Global
+export default Global;

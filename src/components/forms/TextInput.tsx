@@ -31,7 +31,7 @@ const InputContainer = styled.div`
 `;
 
 const InputLabel = styled.label`
-  font-size: 15px;
+  font-size: 1.4rem;
   font-weight: 500;
   color: var(--input-label-color);
   transform: translateX(24px);
@@ -43,7 +43,7 @@ const InputField = styled.input`
   margin: 0;
   padding: 12px;
   font-size: 1.6rem;
-  font-weight: 400;
+  font-weight: 700;
   color: var(--input-text-color);
   background: var(--input-background);
   border: none;
@@ -93,7 +93,7 @@ const InputMessage = styled.p`
   transform: translateY(-14px);
 `;
 
-export const UnderlineInput1: React.FC<UnderlineInput1Props> = ({
+export const TextInput: React.FC<UnderlineInput1Props> = ({
   inputType,
   inputName,
   labelName,
@@ -127,17 +127,17 @@ export const UnderlineInput1: React.FC<UnderlineInput1Props> = ({
 
   const styles = {
     "--input-label-color": "#f8f8f8",
-    "--input-text-color": "#9EA5E5",
+    "--input-text-color": "var(--accent-purple)",
     "--input-background": "#313056",
-    "--input-caret": "#FF24F6",
-    "--input-placeholder-color": "#9EA5E5",
+    "--input-caret": "var(--accent-teal)",
+    "--input-placeholder-color": "var(--accent-purple)",
     "--base-underline-color": "#14141F",
     "--indicator-underline-color": touched
-      ? "#FF24F6"
+      ? "var(--accent-pink)"
       : !valid && !touched && !initial
       ? "#E03030"
       : valid && !touched
-      ? "#55ECA3"
+      ? "var(--accent-teal)"
       : "#14141F",
   } as React.CSSProperties;
 

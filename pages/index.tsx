@@ -1,9 +1,7 @@
-const Home = () => {
-  return (
-    <div>
-      <h1>Bare Bones NextJS - Typescript & Styled Components</h1>
-    </div>
-  )
-}
+import { LoginView } from "../src/views/Login";
 
-export default Home
+const Home = () => {
+  return <LoginView />;
+};
+
+export default Home;
