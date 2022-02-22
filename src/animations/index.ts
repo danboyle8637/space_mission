@@ -67,7 +67,7 @@ export const clickLayerOff = (layer: HTMLDivElement) => {
 export const missionDetailsOpen = (card: HTMLDivElement) => {
   animate(
     card,
-    { transform: "translate(-50%, 0), scale(1)", opacity: 1 },
+    { transform: "translate(-50%, 0) scale(1)", opacity: 1 },
     { duration: 0.4, easing: spring(), delay: 0.6 }
   );
 };
@@ -75,7 +75,15 @@ export const missionDetailsOpen = (card: HTMLDivElement) => {
 export const missionDetailsClosed = (card: HTMLDivElement) => {
   animate(
     card,
-    { transform: "translate(-50%, -60%), scale(0.9)", opacity: 0 },
+    { transform: "translate(-50%, -60%) scale(0.9)", opacity: 0 },
     { duration: 0.4, easing: spring() }
+  );
+};
+
+export const loginFormOnLoad = (form: HTMLDivElement) => {
+  animate(
+    form,
+    { transform: "translateY(0px) scale(1)", opacity: 1 },
+    { duration: 0.8, easing: "ease-in-out" }
   );
 };

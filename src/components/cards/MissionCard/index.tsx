@@ -8,6 +8,17 @@ import { Portal } from "../../shared/Portal";
 import { MissionDetailsOverlay } from "../../overlays/MissionDetailsOverlay";
 import { MissionDetailsCard } from "../../cards/MissionDetailsCard";
 import { useIsHovering } from "../../../hooks/useIsHovering";
+import { MissionId } from "../../../types";
+
+interface MissionCardProps {
+  missionId: MissionId;
+  coverImage: string;
+  altTag: string;
+  titleTag: string;
+  headline: string;
+  description: string;
+  difficulty: number;
+}
 
 const CardContainer = styled.button`
   display: grid;
@@ -33,7 +44,15 @@ const CardContainer = styled.button`
   }
 `;
 
-export const MissionCard = () => {
+export const MissionCard: React.FC<MissionCardProps> = ({
+  missionId,
+  coverImage,
+  altTag,
+  titleTag,
+  headline,
+  description,
+  difficulty,
+}) => {
   const [isDetailsOpen, setIsDetailsOpen] = useState<boolean>(false);
 
   const { isHovering, toggleIsHovering } = useIsHovering();
@@ -46,11 +65,6 @@ export const MissionCard = () => {
     setIsDetailsOpen(false);
   };
 
-  const imageU4rl =
-    "https://ik.imagekit.io/csu76xuqqlwj/nerds-who-sell/projects/space-mission/black-hole-card-image_R0qCJKeXQ.jpg?ik-sdk-version=javascript-1.4.3";
-
-  const testDescription = `Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`;
-
   return (
     <>
       <CardContainer
@@ -61,14 +75,11 @@ export const MissionCard = () => {
         onClick={toggleMissionDetails}
       >
         <BannerImage
-          imageUrl="https://ik.imagekit.io/csu76xuqqlwj/nerds-who-sell/projects/space-mission/black-hole-card-image_R0qCJKeXQ.jpg?ik-sdk-version=javascript-1.4.3"
-          altTag="Alt tag for testing"
-          titleTag="Title tag for testing"
+          imageUrl={coverImage}
+          altTag={altTag}
+          titleTag={titleTag}
         />
-        <MissionDescription
-          headline="Go Explore Gargantua"
-          description={testDescription}
-        />
+        <MissionDescription headline={headline} description={description} />
         <Footer
           isActive={true}
           isGoal1Complete={true}
@@ -84,11 +95,11 @@ export const MissionCard = () => {
         >
           <MissionDetailsCard
             isOpen={isDetailsOpen}
-            imageUrl={imageU4rl}
-            altTag="Test alt Tag"
-            titleTag="Test title Tag"
-            headline="Go Explore Gargantua"
-            description={testDescription}
+            imageUrl={coverImage}
+            altTag={altTag}
+            titleTag={titleTag}
+            headline={headline}
+            description={description}
           />
         </MissionDetailsOverlay>
       </Portal>

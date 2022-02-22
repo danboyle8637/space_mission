@@ -1,35 +1,67 @@
 import styled from "styled-components";
 
-import { BaseCard } from "../../components/cards/UserDashboardCard/BaseCard";
-import { UserIdentityContent } from "../../components/cards/UserDashboardCard/UserIdentityContent";
-import { UserMissionContent } from "../../components/cards/UserDashboardCard/UserMissionContent";
-import { UserMissionStatsContent } from "../../components/cards/UserDashboardCard/UserMissionStatsContent";
+import { Header } from "./Header";
+import { UserDataBar } from "./UserDataBar";
+import { MissionCards } from "./MissionCards";
+import { MissionDoc } from "../../types";
 
-import { MissionCard } from "../../components/cards/MissionCard";
+interface DashbordViewProps {
+  missions: MissionDoc[];
+}
 
-const TempContainer = styled.div`
+const ViewContainer = styled.div`
+  position: relative;
+  padding: 40px 12px 80px 12px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 40px;
+  gap: 80px;
   width: 100%;
-  height: 100vh;
+  isolation: isolate;
 `;
 
-export const DashboardView = () => {
+const HeaderContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: min-content;
+  gap: 40px;
+`;
+
+const BlueGalaxy = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: var(--accent-teal);
+  width: 460px;
+  height: 460px;
+  opacity: 0.2;
+  filter: blur(100px);
+  z-index: -1;
+`;
+
+const PinkGalaxy = styled.div`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: var(--accent-pink);
+  width: 460px;
+  height: 460px;
+  opacity: 0.2;
+  filter: blur(100px);
+  z-index: -1;
+`;
+
+export const DashboardView: React.FC<DashbordViewProps> = ({ missions }) => {
   return (
-    <TempContainer>
-      <BaseCard>
-        <UserIdentityContent />
-      </BaseCard>
-      <BaseCard>
-        <UserMissionContent />
-      </BaseCard>
-      <BaseCard>
-        <UserMissionStatsContent />
-      </BaseCard>
-      <MissionCard />
-    </TempContainer>
+    <ViewContainer>
+      <HeaderContainer>
+        <Header />
+        <UserDataBar />
+      </HeaderContainer>
+      <MissionCards missions={missions} />
+      <BlueGalaxy />
+      <PinkGalaxy />
+    </ViewContainer>
   );
 };

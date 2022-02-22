@@ -1,7 +1,9 @@
+import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
 import { SpaceMissionLogo } from "../../../components/images/SpaceMissionLogo";
 import { LoginForm as Form } from "../../../components/forms/LoginForm";
+import { loginFormOnLoad } from "../../../animations";
 
 const Container = styled.div`
   position: relative;
@@ -19,6 +21,8 @@ const FormContainer = styled.div`
   border-radius: 20px;
   width: 375px;
   box-shadow: 0 0 0 6px hsla(0, 0%, 0%, 0.4);
+  opacity: 0;
+  transform: translateY(-80px) scale(0.9);
   overflow: hidden;
 `;
 
@@ -49,9 +53,26 @@ const PinkGalaxy = styled.div`
 `;
 
 export const LoginForm = () => {
+  const [shouldShowLoginForm, setShouldShowLoginForm] =
+    useState<boolean>(false);
+
+  const loginFormRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    setShouldShowLoginForm(true);
+  }, []);
+
+  useEffect(() => {
+    const loginForm = loginFormRef.current;
+
+    if (loginForm && shouldShowLoginForm) {
+      loginFormOnLoad(loginForm);
+    }
+  }, [shouldShowLoginForm]);
+
   return (
     <Container>
-      <FormContainer>
+      <FormContainer ref={loginFormRef}>
         <Logo>
           <SpaceMissionLogo />
         </Logo>
