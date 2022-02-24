@@ -2,27 +2,53 @@ import { useEffect } from "react";
 import { GetStaticProps } from "next";
 
 import { DashboardView } from "../src/views/Dashboard";
+import { missionsStore } from "../lib/missionsStore";
 import { endpoints } from "../src/utils/endpoints";
 import { DashboardViewProps } from "../src/types/views";
 
 const Dashboard: React.FC<DashboardViewProps> = ({ missions }) => {
+  const setMissions = missionsStore((state) => state.setMissions);
+
+  // useEffect(() => {
+  //   if (window.indexedDB) {
+  //     const db = indexedDB.open("missions");
+
+  //     db.onupgradeneeded = () => {
+  //       const missionsDb = db.result;
+  //       const store = missionsDb.createObjectStore("missions", {
+  //         keyPath: "missionId",
+  //       });
+  //       const missionIdIndex = store.createIndex("by_missionId", "missionId", {
+  //         unique: true,
+  //       });
+
+  //       store.put(missions);
+  //     };
+  //   }
+  // }, []);
+
   useEffect(() => {
-    if (window.indexedDB) {
-      const db = indexedDB.open("missions");
+    if (missions) {
+      const request = new Request("https://fww.live/get-missions", {
+        method: "GET",
+      });
 
-      db.onupgradeneeded = () => {
-        const missionsDb = db.result;
-        const store = missionsDb.createObjectStore("missions", {
-          keyPath: "missionId",
-        });
-        const missionIdIndex = store.createIndex("by_missionId", "missionId", {
-          unique: true,
-        });
+      const missionsRes = new Response(JSON.stringify(missions));
 
-        store.put(missions);
-      };
+      caches.open("missions").then((cache) => {
+        return cache.match(request).then((res) => {
+          if (res) {
+            return;
+          } else {
+            cache.put(request, missionsRes);
+            return;
+          }
+        });
+      });
+
+      setMissions(missions);
     }
-  }, []);
+  }, [missions]);
 
   return <DashboardView missions={missions} />;
 };

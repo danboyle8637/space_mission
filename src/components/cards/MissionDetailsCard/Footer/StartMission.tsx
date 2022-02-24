@@ -28,9 +28,13 @@ const MissionText = styled.p`
 export const StartMission: React.FC<StartMissionProps> = ({ missionId }) => {
   const setUserDoc = userStore((state) => state.setUser);
 
+  console.log(missionId);
+
   const handleStartMission = () => {
     const activateMission = async () => {
       const url = `${process.env.NEXT_PUBLIC_API_DEV_URL}/${endpoints.ACTIVATE_MISSION}`;
+
+      console.log(url);
 
       const body = {
         missionId: missionId,

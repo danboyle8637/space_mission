@@ -1,3 +1,4 @@
+import { CSSProperties } from "react";
 import styled from "styled-components";
 
 import { DummyButton } from "../../buttons/DummyButton";
@@ -39,6 +40,12 @@ export const Footer: React.FC<FooterProps> = ({
   isGoal3Complete,
   isHovering,
 }) => {
+  const styles = {
+    "--button-background-color": isActive
+      ? "var(--accent-pink)"
+      : "var(--accent-teal)",
+  } as CSSProperties;
+
   return (
     <Container>
       <DotsContainer>
@@ -46,7 +53,7 @@ export const Footer: React.FC<FooterProps> = ({
         <GoalIndicator isComplete={isGoal2Complete} />
         <GoalIndicator isComplete={isGoal3Complete} />
       </DotsContainer>
-      <ButtonContainer>
+      <ButtonContainer style={styles}>
         <DummyButton isHovering={isHovering}>
           {isActive ? "Update Mission" : "Start Mission"}
         </DummyButton>

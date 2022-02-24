@@ -3,7 +3,11 @@ import styled from "styled-components";
 
 import { text16 } from "../../../styles/typography";
 import { ActiveMission } from "../../images/ActiveMission";
+import { MissionPlaceholder } from "./MissionPlaceholder";
 import { userStore } from "../../../../lib/userStore";
+import { missionsStore } from "../../../../lib/missionsStore";
+import { activeMissionStore } from "../../../../lib/activeMissionStore";
+import { capitalizeName } from "../../../utils/utilityFunctions";
 
 const Container = styled.div`
   display: grid;
@@ -31,7 +35,33 @@ const Label = styled.p`
 export const UserMissionContent = () => {
   const activeMission = userStore((state) => state.activeMission);
 
-  useEffect(() => {}, []);
+  const missions = missionsStore((state) => state.missions);
+
+  const { missionImageData, setActiveMission } = activeMissionStore(
+    (state) => ({
+      missionImageData: {
+        coverImage: state.coverImage,
+        altTag: state.altTag,
+        titleTag: state.titleTag,
+      },
+      setActiveMission: state.setMission,
+    })
+  );
+
+  useEffect(() => {
+    if (activeMission && missions) {
+      const activeMissionData = missions.filter(
+        (mission) => mission.missionId === activeMission
+      );
+
+      setActiveMission(activeMissionData[0]);
+    }
+  }, [activeMission, missions]);
+
+  const missionName =
+    activeMission.length > 0
+      ? capitalizeName(activeMission)
+      : "No Active Mission";
 
   const dynamicStyles = {
     "--label-color": "var(--accent-purple)",
@@ -41,15 +71,17 @@ export const UserMissionContent = () => {
     <Container>
       <IdentityContainer>
         <Label>Active Mission:</Label>
-        <Label style={dynamicStyles}>
-          {activeMission.length > 0 ? activeMission : "No Active Mission"}
-        </Label>
+        <Label style={dynamicStyles}>{missionName}</Label>
       </IdentityContainer>
-      <ActiveMission
-        imageUrl="https://ik.imagekit.io/csu76xuqqlwj/nerds-who-sell/projects/space-mission/black-hole-card-image_R0qCJKeXQ.jpg?ik-sdk-version=javascript-1.4.3"
-        altTag="Alt tag"
-        titleTag="Title tag"
-      />
+      {activeMission !== "" && missionImageData.coverImage !== "" ? (
+        <ActiveMission
+          imageUrl={missionImageData.coverImage}
+          altTag={missionImageData.altTag}
+          titleTag={missionImageData.titleTag}
+        />
+      ) : (
+        <MissionPlaceholder />
+      )}
     </Container>
   );
 };
