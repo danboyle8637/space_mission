@@ -5,14 +5,17 @@ import { CardHeader } from "./CardHeader";
 import { MissionDescription } from "./MissionDescription";
 import { Footer } from "./Footer";
 import { missionDetailsOpen, missionDetailsClosed } from "../../../animations";
+import { MissionId } from '../../../types'
 
 interface MissionDetailsProps {
   isOpen: boolean;
+  missionId: MissionId
   imageUrl: string;
   altTag: string;
   titleTag: string;
   headline: string;
   description: string;
+  isActive: boolean;
 }
 
 const CardContainer = styled.div`
@@ -34,11 +37,13 @@ const CardContainer = styled.div`
 
 export const MissionDetailsCard: React.FC<MissionDetailsProps> = ({
   isOpen,
+  missionId,
   imageUrl,
   altTag,
   titleTag,
   headline,
   description,
+  isActive,
 }) => {
   const missionDetailsCardRef = useRef<HTMLDivElement | null>(null);
 
@@ -63,7 +68,7 @@ export const MissionDetailsCard: React.FC<MissionDetailsProps> = ({
         headline={headline}
       />
       <MissionDescription description={description} />
-      <Footer />
+      <Footer isActive={isActive} missionId={missionId} />
     </CardContainer>
   );
 };

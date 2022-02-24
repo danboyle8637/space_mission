@@ -8,6 +8,7 @@ import { Portal } from "../../shared/Portal";
 import { MissionDetailsOverlay } from "../../overlays/MissionDetailsOverlay";
 import { MissionDetailsCard } from "../../cards/MissionDetailsCard";
 import { useIsHovering } from "../../../hooks/useIsHovering";
+import { userStore } from "../../../../lib/userStore";
 import { MissionId } from "../../../types";
 
 interface MissionCardProps {
@@ -55,7 +56,11 @@ export const MissionCard: React.FC<MissionCardProps> = ({
 }) => {
   const [isDetailsOpen, setIsDetailsOpen] = useState<boolean>(false);
 
+  const activeMission = userStore((state) => state.activeMission);
+
   const { isHovering, toggleIsHovering } = useIsHovering();
+
+  const isActive = activeMission === missionId;
 
   const toggleMissionDetails = () => {
     setIsDetailsOpen((prevValue) => !prevValue);
@@ -81,7 +86,7 @@ export const MissionCard: React.FC<MissionCardProps> = ({
         />
         <MissionDescription headline={headline} description={description} />
         <Footer
-          isActive={true}
+          isActive={isActive}
           isGoal1Complete={true}
           isGoal2Complete={false}
           isGoal3Complete={false}
@@ -95,11 +100,13 @@ export const MissionCard: React.FC<MissionCardProps> = ({
         >
           <MissionDetailsCard
             isOpen={isDetailsOpen}
+            missionId={missionId}
             imageUrl={coverImage}
             altTag={altTag}
             titleTag={titleTag}
             headline={headline}
             description={description}
+            isActive={isActive}
           />
         </MissionDetailsOverlay>
       </Portal>

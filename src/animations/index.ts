@@ -67,8 +67,8 @@ export const clickLayerOff = (layer: HTMLDivElement) => {
 export const missionDetailsOpen = (card: HTMLDivElement) => {
   animate(
     card,
-    { transform: "translate(-50%, 0) scale(1)", opacity: 1 },
-    { duration: 0.4, easing: spring(), delay: 0.6 }
+    { transform: "translate(-50%, -50%) scale(1)", opacity: 1 },
+    { duration: 0.4, easing: spring(), delay: 0.4 }
   );
 };
 

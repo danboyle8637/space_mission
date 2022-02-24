@@ -1,29 +1,27 @@
 import create, { SetState } from "zustand";
 
-interface User {
-  userId: string;
-  callSign: string;
-}
+import { UserDoc } from "../src/types";
 
 type UserState = {
   userId: string;
+  emailAddress: string;
   activeMission: string;
   finishedMissions: string[];
-  callSign: string;
+  callsign: string;
   avatar: string;
-  setUser: (user: User) => void;
+  setUser: (user: UserDoc) => void;
 };
 
 export const userStore = create<UserState>((set: SetState<UserState>) => ({
   userId: "",
+  emailAddress: "",
   activeMission: "",
   finishedMissions: [],
-  callSign: "",
+  callsign: "",
   avatar: "",
   setUser: (user) =>
     set((state) => ({
       ...state,
-      userId: user.userId,
-      callSign: user.callSign,
+      ...user,
     })),
 }));

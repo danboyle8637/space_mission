@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { GetStaticProps } from "next";
 
 import { DashboardView } from "../src/views/Dashboard";
@@ -5,6 +6,24 @@ import { endpoints } from "../src/utils/endpoints";
 import { DashboardViewProps } from "../src/types/views";
 
 const Dashboard: React.FC<DashboardViewProps> = ({ missions }) => {
+  useEffect(() => {
+    if (window.indexedDB) {
+      const db = indexedDB.open("missions");
+
+      db.onupgradeneeded = () => {
+        const missionsDb = db.result;
+        const store = missionsDb.createObjectStore("missions", {
+          keyPath: "missionId",
+        });
+        const missionIdIndex = store.createIndex("by_missionId", "missionId", {
+          unique: true,
+        });
+
+        store.put(missions);
+      };
+    }
+  }, []);
+
   return <DashboardView missions={missions} />;
 };
 

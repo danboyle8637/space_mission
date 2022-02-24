@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { text16 } from "../../../styles/typography";
 import { AvatarButton } from "../../buttons/AvatarButton";
+import { capitalizeName } from "../../../utils/utilityFunctions";
 import { userStore } from "../../../../lib/userStore";
 
 const Container = styled.div`
@@ -29,7 +30,10 @@ const Label = styled.p`
 `;
 
 export const UserIdentityContent = () => {
-  const callSign = userStore((state) => state.callSign);
+  const callSign = userStore((state) => state.callsign);
+
+  const formattedCallSign =
+    callSign.length > 0 ? capitalizeName(callSign) : "Rookie";
 
   const dynamicStyles = {
     "--label-color": "var(--accent-purple)",
@@ -41,7 +45,7 @@ export const UserIdentityContent = () => {
       <IdentityContainer>
         <Label>Astronaut Call Sign:</Label>
         <Label style={dynamicStyles}>
-          {callSign.length > 0 ? callSign : "Rookie"}
+          {callSign.length > 0 ? formattedCallSign : "Rookie"}
         </Label>
       </IdentityContainer>
     </Container>

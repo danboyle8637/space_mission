@@ -1,4 +1,4 @@
-import { CSSProperties } from "react";
+import { useEffect, CSSProperties } from "react";
 import styled from "styled-components";
 
 import { text16 } from "../../../styles/typography";
@@ -30,6 +30,8 @@ const Label = styled.p`
 
 export const UserMissionContent = () => {
   const activeMission = userStore((state) => state.activeMission);
+
+  useEffect(() => {}, []);
 
   const dynamicStyles = {
     "--label-color": "var(--accent-purple)",

@@ -9,3 +9,12 @@ export interface MissionDoc {
   description: string;
   difficulty: number;
 }
+
+export interface UserDoc {
+  userId: string;
+  emailAddress: string;
+  activeMission: string;
+  finishedMissions: string[];
+  callsign: string;
+  avatar: string;
+}
