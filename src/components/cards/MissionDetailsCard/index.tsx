@@ -5,11 +5,11 @@ import { CardHeader } from "./CardHeader";
 import { MissionDescription } from "./MissionDescription";
 import { Footer } from "./Footer";
 import { missionDetailsOpen, missionDetailsClosed } from "../../../animations";
-import { MissionId } from '../../../types'
+import { MissionId } from "../../../types";
 
 interface MissionDetailsProps {
   isOpen: boolean;
-  missionId: MissionId
+  missionId: MissionId;
   imageUrl: string;
   altTag: string;
   titleTag: string;
@@ -60,7 +60,7 @@ export const MissionDetailsCard: React.FC<MissionDetailsProps> = ({
   }, [isOpen]);
 
   return (
-    <CardContainer ref={missionDetailsCardRef}>
+    <CardContainer ref={missionDetailsCardRef} tabIndex={-1}>
       <CardHeader
         imageUrl={imageUrl}
         altTag={altTag}

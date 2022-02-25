@@ -18,3 +18,14 @@ export interface UserDoc {
   callsign: string;
   avatar: string;
 }
+
+export interface Goals {
+  isGoal1Complete: boolean;
+  isGoal2Complete: boolean;
+  isGoal3Complete: boolean;
+}
+
+export interface MissionStatsDoc {
+  missionId: MissionId;
+  goals: Goals;
+}

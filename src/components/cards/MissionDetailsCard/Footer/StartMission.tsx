@@ -5,6 +5,10 @@ import { ActionButton } from "../../../buttons/ActionButton";
 import { endpoints } from "../../../../utils/endpoints";
 import { userStore } from "../../../../../lib/userStore";
 import { MissionId, UserDoc } from "../../../../types";
+import {
+  ActivateMissionUserDocBody,
+  ActivateMissionStatsDocBody,
+} from "../../../../types/network";
 
 interface StartMissionProps {
   missionId: MissionId;
@@ -26,49 +30,73 @@ const MissionText = styled.p`
 `;
 
 export const StartMission: React.FC<StartMissionProps> = ({ missionId }) => {
-  const setUserDoc = userStore((state) => state.setUser);
-
-  console.log(missionId);
+  const { activeMission, setUserDoc } = userStore((state) => ({
+    activeMission: state.activeMission,
+    setUserDoc: state.setUser,
+  }));
 
   const handleStartMission = () => {
     const activateMission = async () => {
-      const url = `${process.env.NEXT_PUBLIC_API_DEV_URL}/${endpoints.ACTIVATE_MISSION}`;
+      const userUrl = `${process.env.NEXT_PUBLIC_API_DEV_URL}/${endpoints.ACTIVATE_MISSION}`;
+      const statsUrl = `${process.env.NEXT_PUBLIC_API_DEV_URL}/${endpoints.HANDLE_STATS_DOC}`;
 
-      console.log(url);
-
-      const body = {
+      const userBody: ActivateMissionUserDocBody = {
         missionId: missionId,
       };
 
-      const response = await fetch(url, {
+      const statsBody: ActivateMissionStatsDocBody = {
+        missionId: missionId,
+        goals: {
+          isGoal1Complete: false,
+          isGoal2Complete: false,
+          isGoal3Complete: false,
+        },
+      };
+
+      const useDocResponse = await fetch(userUrl, {
         method: "POST",
         headers: {
           "should-update-user-cache": "true",
           userId: "123456",
         },
-        body: JSON.stringify(body),
+        body: JSON.stringify(userBody),
       });
 
-      const resData = await response.json();
+      const createStatsDoc = await fetch(statsUrl, {
+        method: "POST",
+        headers: {
+          userId: "123456",
+        },
+        body: JSON.stringify(statsBody),
+      });
 
-      if (!response.ok) {
+      const userData = await useDocResponse.json();
+
+      const statsData = await createStatsDoc.json();
+
+      if (!useDocResponse.ok) {
         // Show toaster that activating the mission did not work... try again.
       }
 
-      const userDoc: UserDoc = resData.userDoc;
+      const userDoc: UserDoc = userData.userDoc;
       setUserDoc(userDoc);
     };
 
     // You also want to create the stats doc
 
-    activateMission();
+    if (missionId !== null) {
+      activateMission();
+    }
   };
 
   return (
     <Container>
       <MissionText>Do You Want This Mission?</MissionText>
-      <ActionButton handleClick={handleStartMission}>
-        Accept Mission
+      <ActionButton
+        handleClick={handleStartMission}
+        isDisabled={activeMission !== ""}
+      >
+        {activeMission !== "" ? "You're Out On A Mission" : "Activate Mission"}
       </ActionButton>
     </Container>
   );

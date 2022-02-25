@@ -65,9 +65,7 @@ export const CheckmarkIcon: React.FC<CheckmarkIconProps> = ({
     >
       <path
         style={{
-          stroke: isTextInput
-            ? "hsla(149, 83%, 48%, 1)"
-            : "hsla(237, 100%, 96%, 1)",
+          stroke: "var(--base-blue)",
           visibility: "hidden",
         }}
         ref={checkRef}

@@ -1,6 +1,7 @@
 import styles from "styled-components";
 
 import { StartMission } from "./StartMission";
+import { MissionGoalsForm } from "./MissionGoalsForm";
 import { MissionId } from "../../../../types";
 
 interface FooterProps {
@@ -10,6 +11,8 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ isActive, missionId }) => {
   return (
-    <>{isActive ? <h1>Footer</h1> : <StartMission missionId={missionId} />}</>
+    <>
+      {isActive ? <MissionGoalsForm /> : <StartMission missionId={missionId} />}
+    </>
   );
 };

@@ -1,4 +1,4 @@
-import { animate, spring } from "motion";
+import { animate, spring, timeline } from "motion";
 
 const draw = (progress: number) => ({
   // This property makes the line "draw" in when animated
@@ -86,4 +86,24 @@ export const loginFormOnLoad = (form: HTMLDivElement) => {
     { transform: "translateY(0px) scale(1)", opacity: 1 },
     { duration: 0.8, easing: "ease-in-out" }
   );
+};
+
+export const overlayCloseButtonAni = (
+  leftCross: HTMLDivElement,
+  rightCross: HTMLDivElement
+) => {
+  const sequence: any = [
+    [
+      leftCross,
+      { transform: "rotate(-45deg)", opacity: 1 },
+      { duration: 0.3, easing: spring() },
+    ],
+    [
+      rightCross,
+      { transform: "rotate(45deg)", opacity: 1 },
+      { duration: 0.3, easing: spring() },
+    ],
+  ];
+
+  timeline(sequence, { duration: 0.6, delay: 0.8 });
 };

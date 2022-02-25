@@ -29,8 +29,8 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   makeSmall = false,
 }) => {
   const styles = {
-    "--box-border-radius": makeSmall ? "10px" : "14px",
-    "--box-dimensions": makeSmall ? "38px" : "54px",
+    "--box-border-radius": makeSmall ? "8px" : "14px",
+    "--box-dimensions": makeSmall ? "28px" : "54px",
   } as CSSProperties;
 
   return (

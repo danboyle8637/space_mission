@@ -1,25 +1,25 @@
 import { CSSProperties } from "react";
 import styled from "styled-components";
 
-import { text16 } from "../../styles/typography";
+import { text14 } from "../../styles/typography";
 import { Checkbox } from "./InputComponents/Checkbox";
 
 interface ButtonProps {
   name: string;
   label: string;
   isChecked: boolean;
-  updateInputValues: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  updateInputValue: (event: React.ChangeEvent<HTMLInputElement>) => void;
   isDisabled: boolean;
 }
 
 const ButtonContainer = styled.div`
   padding: 12px;
-  background: var(--button-background);
-  border-radius: 20px;
+  background: var(--accent-blue);
+  border-radius: 12px;
   border: none;
   width: 100%;
   outline: none;
-  width: 300px;
+  width: 100%;
   transition: box-shadow, transform, 300ms ease-in-out;
   &:focus {
     box-shadow: 0 4px 2px 0px hsla(0, 0%, 0%, 0.4), 0 0 0 2px var(--dark-4),
@@ -39,7 +39,8 @@ const Label = styled.label`
   gap: 12px;
   justify-items: start;
   align-items: center;
-  ${text16}
+  ${text14}
+  color: var(--base-blue);
   font-weight: 700;
   width: 100%;
   cursor: var(--button-cursor);
@@ -49,11 +50,11 @@ const HiddenCheckboxInput = styled.input.attrs({ type: "checkbox" })`
   display: none;
 `;
 
-export const SavedWorkoutActionCheckbox: React.FC<ButtonProps> = ({
+export const GoalCheckbox: React.FC<ButtonProps> = ({
   name,
   label,
   isChecked,
-  updateInputValues,
+  updateInputValue,
   isDisabled,
 }) => {
   const styles = {
@@ -76,7 +77,7 @@ export const SavedWorkoutActionCheckbox: React.FC<ButtonProps> = ({
           id={name}
           name={name}
           checked={isChecked}
-          onChange={updateInputValues}
+          onChange={updateInputValue}
           disabled={isDisabled}
         />
       </Label>

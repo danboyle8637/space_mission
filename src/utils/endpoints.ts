@@ -10,4 +10,5 @@ export const endpoints = {
   CREATE_STATS_DOC: "create-stats-doc",
   GET_STATS_DOC: "get-stats-doc",
   UPDATE_STATS_DOC: "update-stats-doc",
+  HANDLE_STATS_DOC: "handle-stats-doc",
 };
