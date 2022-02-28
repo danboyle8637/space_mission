@@ -30,7 +30,7 @@ export const CircleGraph: React.FC<CircleGraphProps> = ({
         drawCircleGraph(valuePath, value, duration, true);
       }
     };
-  }, [runAction === true]);
+  }, [runAction === true, value]);
 
   return (
     <svg

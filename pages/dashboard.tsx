@@ -9,27 +9,9 @@ import { DashboardViewProps } from "../src/types/views";
 const Dashboard: React.FC<DashboardViewProps> = ({ missions }) => {
   const setMissions = missionsStore((state) => state.setMissions);
 
-  // useEffect(() => {
-  //   if (window.indexedDB) {
-  //     const db = indexedDB.open("missions");
-
-  //     db.onupgradeneeded = () => {
-  //       const missionsDb = db.result;
-  //       const store = missionsDb.createObjectStore("missions", {
-  //         keyPath: "missionId",
-  //       });
-  //       const missionIdIndex = store.createIndex("by_missionId", "missionId", {
-  //         unique: true,
-  //       });
-
-  //       store.put(missions);
-  //     };
-  //   }
-  // }, []);
-
   useEffect(() => {
     if (missions) {
-      const request = new Request("https://fww.live/get-missions", {
+      const request = new Request("/get-missions", {
         method: "GET",
       });
 

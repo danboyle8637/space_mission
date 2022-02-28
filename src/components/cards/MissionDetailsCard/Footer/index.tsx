@@ -12,7 +12,11 @@ interface FooterProps {
 export const Footer: React.FC<FooterProps> = ({ isActive, missionId }) => {
   return (
     <>
-      {isActive ? <MissionGoalsForm /> : <StartMission missionId={missionId} />}
+      {isActive ? (
+        <MissionGoalsForm missionId={missionId} />
+      ) : (
+        <StartMission missionId={missionId} />
+      )}
     </>
   );
 };

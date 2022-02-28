@@ -49,7 +49,7 @@ export const UserMissionContent = () => {
   );
 
   useEffect(() => {
-    if (activeMission && missions) {
+    if (activeMission && missions.length > 0) {
       const activeMissionData = missions.filter(
         (mission) => mission.missionId === activeMission
       );

@@ -1,6 +1,6 @@
 import create, { SetState } from "zustand";
 
-import { MissionId } from "../src/types";
+import { MissionId, MissionStatsDoc } from "../src/types";
 
 type MissionStatsState = {
   missionId: MissionId | null;
@@ -9,6 +9,7 @@ type MissionStatsState = {
     isGoal2Complete: boolean;
     isGoal3Complete: boolean;
   };
+  setStatsDoc: (stats: MissionStatsDoc) => void;
   updateInputValue: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
@@ -20,6 +21,12 @@ export const missionStatsStore = create<MissionStatsState>(
       isGoal2Complete: false,
       isGoal3Complete: false,
     },
+    setStatsDoc: (stats) =>
+      set((state) => ({
+        ...state,
+        missionId: stats.missionId,
+        goals: stats.goals,
+      })),
     updateInputValue: (event) =>
       set((state) => {
         const name = event.target.name;

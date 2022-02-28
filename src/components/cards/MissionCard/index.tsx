@@ -87,9 +87,6 @@ export const MissionCard: React.FC<MissionCardProps> = ({
         <MissionDescription headline={headline} description={description} />
         <Footer
           isActive={isActive}
-          isGoal1Complete={true}
-          isGoal2Complete={false}
-          isGoal3Complete={false}
           isHovering={isHovering}
         />
       </CardContainer>

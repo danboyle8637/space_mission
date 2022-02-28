@@ -3,12 +3,11 @@ import styled from "styled-components";
 
 import { DummyButton } from "../../buttons/DummyButton";
 import { GoalIndicator } from "../../cssDrawings/GoalIndicator";
+import { missionStatsStore } from "../../../../lib/missionStatsStore";
 
 interface FooterProps {
   isActive: boolean;
-  isGoal1Complete: boolean;
-  isGoal2Complete: boolean;
-  isGoal3Complete: boolean;
+
   isHovering: boolean;
 }
 
@@ -33,13 +32,18 @@ const ButtonContainer = styled.div`
   width: 175px;
 `;
 
-export const Footer: React.FC<FooterProps> = ({
-  isActive,
-  isGoal1Complete,
-  isGoal2Complete,
-  isGoal3Complete,
-  isHovering,
-}) => {
+export const Footer: React.FC<FooterProps> = ({ isActive, isHovering }) => {
+  const { isGoal1Complete, isGoal2Complete, isGoal3Complete } =
+    missionStatsStore((state) => ({
+      isGoal1Complete: state.goals.isGoal1Complete,
+      isGoal2Complete: state.goals.isGoal2Complete,
+      isGoal3Complete: state.goals.isGoal3Complete,
+    }));
+
+  const goal1 = isActive && isGoal1Complete;
+  const goal2 = isActive && isGoal2Complete;
+  const goal3 = isActive && isGoal3Complete;
+
   const styles = {
     "--button-background-color": isActive
       ? "var(--accent-pink)"
@@ -49,9 +53,9 @@ export const Footer: React.FC<FooterProps> = ({
   return (
     <Container>
       <DotsContainer>
-        <GoalIndicator isComplete={isGoal1Complete} />
-        <GoalIndicator isComplete={isGoal2Complete} />
-        <GoalIndicator isComplete={isGoal3Complete} />
+        <GoalIndicator isComplete={goal1} />
+        <GoalIndicator isComplete={goal2} />
+        <GoalIndicator isComplete={goal3} />
       </DotsContainer>
       <ButtonContainer style={styles}>
         <DummyButton isHovering={isHovering}>

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { CardHeader } from "./CardHeader";
 import { MissionDescription } from "./MissionDescription";
 import { Footer } from "./Footer";
+import { CancelMissionButton } from "../../buttons/CancelMissionButton";
 import { missionDetailsOpen, missionDetailsClosed } from "../../../animations";
 import { MissionId } from "../../../types";
 
@@ -69,6 +70,7 @@ export const MissionDetailsCard: React.FC<MissionDetailsProps> = ({
       />
       <MissionDescription description={description} />
       <Footer isActive={isActive} missionId={missionId} />
+      {isActive ? <CancelMissionButton missionId={missionId} /> : null}
     </CardContainer>
   );
 };

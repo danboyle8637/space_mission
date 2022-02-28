@@ -4,6 +4,7 @@ import { text16 } from "../../../../styles/typography";
 import { ActionButton } from "../../../buttons/ActionButton";
 import { endpoints } from "../../../../utils/endpoints";
 import { userStore } from "../../../../../lib/userStore";
+import { missionStatsStore } from "../../../../../lib/missionStatsStore";
 import { MissionId, UserDoc } from "../../../../types";
 import {
   ActivateMissionUserDocBody,
@@ -35,10 +36,12 @@ export const StartMission: React.FC<StartMissionProps> = ({ missionId }) => {
     setUserDoc: state.setUser,
   }));
 
+  const setStatsDoc = missionStatsStore((state) => state.setStatsDoc);
+
   const handleStartMission = () => {
     const activateMission = async () => {
       const userUrl = `${process.env.NEXT_PUBLIC_API_DEV_URL}/${endpoints.ACTIVATE_MISSION}`;
-      const statsUrl = `${process.env.NEXT_PUBLIC_API_DEV_URL}/${endpoints.HANDLE_STATS_DOC}`;
+      const statsUrl = `${process.env.NEXT_PUBLIC_API_DEV_URL}/${endpoints.HANDLE_STATS_DOC}/create-stats-doc`;
 
       const userBody: ActivateMissionUserDocBody = {
         missionId: missionId,
@@ -78,8 +81,18 @@ export const StartMission: React.FC<StartMissionProps> = ({ missionId }) => {
         // Show toaster that activating the mission did not work... try again.
       }
 
+      if (!createStatsDoc.ok) {
+        // Show toaster that mission stats doc was not created and they need to try again.
+      }
+
       const userDoc: UserDoc = userData.userDoc;
       setUserDoc(userDoc);
+
+      const goals = statsData.statsDoc;
+      setStatsDoc({
+        missionId: missionId,
+        goals: goals,
+      });
     };
 
     // You also want to create the stats doc

@@ -3,6 +3,12 @@ import styled from "styled-components";
 
 import { GoalCheckbox } from "../../../forms/GoalCheckbox";
 import { missionStatsStore } from "../../../../../lib/missionStatsStore";
+import { endpoints } from "../../../../utils/endpoints";
+import { MissionId } from "../../../../types";
+
+interface GoalsFormProps {
+  missionId: MissionId;
+}
 
 const GoalForm = styled.form`
   padding: 0 20px 20px 20px;
@@ -12,23 +18,50 @@ const GoalForm = styled.form`
   width: 100%;
 `;
 
-export const MissionGoalsForm = () => {
+export const MissionGoalsForm: React.FC<GoalsFormProps> = ({ missionId }) => {
   const {
     isGoal1Complete,
     isGoal2Complete,
     isGoal3Complete,
     updateInputValue,
+    setStatsDoc,
   } = missionStatsStore((state) => ({
     isGoal1Complete: state.goals.isGoal1Complete,
     isGoal2Complete: state.goals.isGoal2Complete,
     isGoal3Complete: state.goals.isGoal3Complete,
     updateInputValue: state.updateInputValue,
+    setStatsDoc: state.setStatsDoc,
   }));
 
   const updateStatsDoc = useCallback(() => {
-    if (isGoal1Complete) {
-      console.log("Hit api and update stats: ", isGoal1Complete);
-    }
+    const updateMissionStats = async () => {
+      const url = `${process.env.NEXT_PUBLIC_API_DEV_URL}/${endpoints.HANDLE_STATS_DOC}/update-stats-doc`;
+
+      const updateStatsBody = {
+        missionId: missionId,
+        goals: {
+          isGoal1Complete: isGoal1Complete,
+          isGoal2Complete: isGoal2Complete,
+          isGoal3Complete: isGoal3Complete,
+        },
+      };
+
+      const statsRes = await fetch(url, {
+        method: "POST",
+        headers: {
+          userId: "123456",
+        },
+        body: JSON.stringify(updateStatsBody),
+      });
+
+      const statsData = await statsRes.json();
+      setStatsDoc({
+        missionId: missionId,
+        goals: statsData.statsDoc,
+      });
+    };
+
+    updateMissionStats();
   }, [isGoal1Complete, isGoal2Complete, isGoal3Complete]);
 
   useEffect(() => {

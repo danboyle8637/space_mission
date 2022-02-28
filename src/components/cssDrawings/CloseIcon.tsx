@@ -21,7 +21,7 @@ const IconContainer = styled.div`
 const XCross = styled.div`
   grid-column: 1 / -1;
   grid-row: 1 / -1;
-  background: var(--close-icon-color, var(--light-1));
+  background: var(--close-icon-color, #f8f8f8);
   border-radius: 20px;
   width: calc((var(--icon-size) * 5) / 34);
   height: 100%;

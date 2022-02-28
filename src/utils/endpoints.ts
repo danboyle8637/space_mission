@@ -4,11 +4,12 @@ export const endpoints = {
   GET_MISSIONS: "get-missions",
   UPDATE_CALLSIGN: "update-callsign",
   ACTIVATE_MISSION: "activate-mission",
+  CANCEL_MISSION: "cancel-mission",
   GET_ACTIVE_MISSION: "get-active-mission",
   FINISH_MISSION: "finish-mission",
   CREATE_MISSION: "create-mission",
   CREATE_STATS_DOC: "create-stats-doc",
   GET_STATS_DOC: "get-stats-doc",
   UPDATE_STATS_DOC: "update-stats-doc",
-  HANDLE_STATS_DOC: "handle-stats-doc",
+  HANDLE_STATS_DOC: "handle-mission-stats",
 };
