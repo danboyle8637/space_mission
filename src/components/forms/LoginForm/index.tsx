@@ -48,11 +48,15 @@ export const LoginForm = () => {
   const handleLogin = (event: React.FormEvent) => {
     event.preventDefault();
 
-    const date = new Date("3/12/2022");
+    const date = new Date();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const year = date.getFullYear();
+    const expireDate = new Date(`${month}/${day}/${year}`);
 
     const body = {
       emailAddress: emailAddress.value,
-      date: `${date}`,
+      date: `${expireDate}`,
     };
 
     try {
