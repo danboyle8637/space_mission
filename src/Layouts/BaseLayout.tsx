@@ -1,10 +1,15 @@
-import { useRouter } from "next/router";
 import styled from "styled-components";
 
+import { Portal } from "../components/shared/Portal";
+import { ErrorToasterOverlay } from "../components/overlays/ErrorToasterOverlay";
+import { networkStore } from "../../lib/networkStore";
 import Global from "../styles/Global";
 
 const Layout: React.FC = ({ children }) => {
-  const { pathname } = useRouter();
+  const { isErrorToasterOpen, closeErrorToaster } = networkStore((state) => ({
+    isErrorToasterOpen: state.isErrorToasterOpen,
+    closeErrorToaster: state.closeErrorToaster,
+  }));
 
   return (
     <>
@@ -12,6 +17,12 @@ const Layout: React.FC = ({ children }) => {
         <Global />
         <ContentContainer>{children}</ContentContainer>
       </BaseContainer>
+      <Portal>
+        <ErrorToasterOverlay
+          isOpen={isErrorToasterOpen}
+          closeOverlay={closeErrorToaster}
+        />
+      </Portal>
     </>
   );
 };
@@ -19,6 +30,7 @@ const Layout: React.FC = ({ children }) => {
 export default Layout;
 
 const BaseContainer = styled.main`
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;

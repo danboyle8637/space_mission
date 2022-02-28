@@ -7,7 +7,9 @@ import { UserMissionContent } from "../../components/cards/UserDashboardCard/Use
 import { UserMissionStatsContent } from "../../components/cards/UserDashboardCard/UserMissionStatsContent";
 import { UserDoc } from "../../types";
 import { userStore } from "../../../lib/userStore";
+import { networkStore } from "../../../lib/networkStore";
 import { endpoints } from "../../utils/endpoints";
+import { getErrorMessage } from "../../utils/utilityFunctions";
 
 const BarContainer = styled.div`
   display: grid;
@@ -22,23 +24,37 @@ export const UserDataBar = () => {
     setUser: state.setUser,
   }));
 
+  const { setErrorMessage, toggleErrorToaster } = networkStore((state) => ({
+    setErrorMessage: state.setErrorMessage,
+    toggleErrorToaster: state.toggleErrorToaster,
+  }));
+
   useEffect(() => {
     const getUser = async () => {
-      const url = `${process.env.NEXT_PUBLIC_API_DEV_URL}/${endpoints.GET_USER}`;
+      const baseUrl =
+        process.env.NODE_ENV === "development"
+          ? process.env.NEXT_PUBLIC_API_DEV_URL
+          : process.env.API_URL;
+      const url = `${baseUrl}/${endpoints.GET_USER}`;
 
-      const userResponse = await fetch(url, {
-        method: "GET",
-        headers: {
-          userId: "123456",
-        },
-      });
+      try {
+        const userResponse = await fetch(url, {
+          method: "GET",
+        });
 
-      const userData: UserDoc = await userResponse.json();
+        const userData: UserDoc = await userResponse.json();
 
-      setUser(userData);
+        setUser(userData);
+      } catch (error) {
+        setErrorMessage(
+          "Error Getting User In Data Bar",
+          getErrorMessage(error)
+        );
+        toggleErrorToaster();
+      }
     };
 
-    if (userId.length === 0) {
+    if (userId.length === 0 || !userId) {
       getUser();
     }
   }, [userId]);

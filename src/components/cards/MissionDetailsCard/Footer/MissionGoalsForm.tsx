@@ -35,7 +35,11 @@ export const MissionGoalsForm: React.FC<GoalsFormProps> = ({ missionId }) => {
 
   const updateStatsDoc = useCallback(() => {
     const updateMissionStats = async () => {
-      const url = `${process.env.NEXT_PUBLIC_API_DEV_URL}/${endpoints.HANDLE_STATS_DOC}/update-stats-doc`;
+      const baseUrl =
+        process.env.NODE_ENV === "development"
+          ? process.env.NEXT_PUBLIC_API_DEV_URL
+          : process.env.API_URL;
+      const url = `${baseUrl}/${endpoints.HANDLE_STATS_DOC}/update-stats-doc`;
 
       const updateStatsBody = {
         missionId: missionId,
@@ -48,9 +52,6 @@ export const MissionGoalsForm: React.FC<GoalsFormProps> = ({ missionId }) => {
 
       const statsRes = await fetch(url, {
         method: "POST",
-        headers: {
-          userId: "123456",
-        },
         body: JSON.stringify(updateStatsBody),
       });
 

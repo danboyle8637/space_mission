@@ -5,6 +5,8 @@ import { TextInput } from "../TextInput";
 import { FormButton } from "../../buttons/FormButton";
 import { formStore } from "../../../../lib/formStore";
 import { userStore } from "../../../../lib/userStore";
+import { networkStore } from "../../../../lib/networkStore";
+import { getErrorMessage } from "../../../utils/utilityFunctions";
 
 const FormContainer = styled.form`
   display: grid;
@@ -34,6 +36,11 @@ export const LoginForm = () => {
     updateInputOptions: state.updateInputOptions,
   }));
 
+  const { setErrorMessage, toggleErrorToaster } = networkStore((state) => ({
+    toggleErrorToaster: state.toggleErrorToaster,
+    setErrorMessage: state.setErrorMessage,
+  }));
+
   const { push } = useRouter();
 
   const formValid = emailAddress.valid;
@@ -48,24 +55,29 @@ export const LoginForm = () => {
       date: `${date}`,
     };
 
-    const logUserIn = async () => {
-      const res = await fetch("/api/login", {
-        method: "POST",
-        body: JSON.stringify(body),
-      });
+    try {
+      const logUserIn = async () => {
+        const res = await fetch("/api/login", {
+          method: "POST",
+          body: JSON.stringify(body),
+        });
 
-      const data = await res.json();
-      setUser(data.userDoc);
+        const data = await res.json();
+        setUser(data.userDoc);
 
-      debugger;
+        debugger;
 
-      if (data) {
-        push("/dashboard");
+        if (data) {
+          push("/dashboard");
+        }
+      };
+
+      if (formValid) {
+        logUserIn();
       }
-    };
-
-    if (formValid) {
-      logUserIn();
+    } catch (error) {
+      setErrorMessage("Login Call Error", getErrorMessage(error));
+      toggleErrorToaster();
     }
   };
 

@@ -60,7 +60,7 @@ self.addEventListener("fetch", async (event) => {
             if (res) {
               return res;
             } else {
-              return fetch(event.request).then((res) => {
+              return fetch(event.request).then(async (res) => {
                 const clonedRes = res.clone();
                 cache.put(event.request, clonedRes);
                 return res;

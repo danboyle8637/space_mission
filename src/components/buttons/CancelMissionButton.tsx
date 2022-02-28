@@ -4,6 +4,8 @@ import { CloseIcon } from "../cssDrawings/CloseIcon";
 import { endpoints } from "../../utils/endpoints";
 import { userStore } from "../../../lib/userStore";
 import { MissionId } from "../../types";
+import { networkStore } from "../../../lib/networkStore";
+import { getErrorMessage } from "../../utils/utilityFunctions";
 
 interface ButtonProps {
   missionId: MissionId;
@@ -43,28 +45,41 @@ const CancelButton = styled.button`
 export const CancelMissionButton: React.FC<ButtonProps> = ({ missionId }) => {
   const setUser = userStore((state) => state.setUser);
 
+  const { setErrorMessage, toggleErrorToaster } = networkStore((state) => ({
+    setErrorMessage: state.setErrorMessage,
+    toggleErrorToaster: state.toggleErrorToaster,
+  }));
+
   const handleCancelMission = async () => {
     // set loader that says cancelling mission
     console.log("Set a loading state of some sort");
 
-    const url = `${process.env.NEXT_PUBLIC_API_DEV_URL}/${endpoints.CANCEL_MISSION}`;
+    const baseUrl =
+      process.env.NODE_ENV === "development"
+        ? process.env.NEXT_PUBLIC_API_DEV_URL
+        : process.env.API_URL;
+    const url = `${baseUrl}/${endpoints.CANCEL_MISSION}`;
 
     const cancelBody = {
       missionId: missionId,
     };
 
-    const cancelRes = await fetch(url, {
-      method: "POST",
-      headers: {
-        "should-update-user-cache": "true",
-        userId: "123456",
-      },
-      body: JSON.stringify(cancelBody),
-    });
+    try {
+      const cancelRes = await fetch(url, {
+        method: "POST",
+        headers: {
+          "should-update-user-cache": "true",
+        },
+        body: JSON.stringify(cancelBody),
+      });
 
-    const cancelData = await cancelRes.json();
-    const userDoc = cancelData.userDoc;
-    setUser(userDoc);
+      const cancelData = await cancelRes.json();
+      const userDoc = cancelData.userDoc;
+      setUser(userDoc);
+    } catch (error) {
+      setErrorMessage("Cancel Mission Call", getErrorMessage(error));
+      toggleErrorToaster();
+    }
   };
 
   return (
