@@ -57,6 +57,8 @@ export const LoginForm = () => {
       const data = await res.json();
       setUser(data.userDoc);
 
+      debugger;
+
       if (data) {
         push("/dashboard");
       }

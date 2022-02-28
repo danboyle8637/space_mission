@@ -240,20 +240,3 @@ self.addEventListener("fetch", async (event) => {
     }
   }
 });
-
-/*
-
-        // Create indexedDB
-        const dbReq = indexedDB.open(userDBName, userDBVersion);
-
-        dbReq.onerror = () => {
-          return res;
-        };
-
-        dbReq.onsuccess = (evt) => {
-          userDB = dbReq.result;
-          const store = userDB.createObjectStore("user", { keyPath: "userId" });
-          store.createIndex("userId", "userId", { unique: true });
-        };
-
-*/
