@@ -1,20 +1,29 @@
-import App from 'next/app'
+import { useEffect } from "react";
+import { AppProps } from "next/app";
 
-import Layout from '../src/Layouts/BaseLayout'
+import Layout from "../src/Layouts/BaseLayout";
 
-class MyApp extends App {
+const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
+  useEffect(() => {
+    const unregisterServiceWorker = async () => {
+      if (navigator && "serviceWorker" in navigator) {
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        for (let i = 0; i < registrations.length; i++) {
+          registrations[i].unregister();
+        }
+      }
+    };
 
-  render() {
-    const { Component, pageProps } = this.props
+    unregisterServiceWorker();
+  }, []);
 
-    return (
-      <>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </>
-    )
-  }
-}
+  return (
+    <>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </>
+  );
+};
 
-export default MyApp
+export default MyApp;

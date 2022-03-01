@@ -29,35 +29,35 @@ export const UserDataBar = () => {
     toggleErrorToaster: state.toggleErrorToaster,
   }));
 
-  useEffect(() => {
-    const getUser = async () => {
-      const baseUrl =
-        process.env.NODE_ENV === "development"
-          ? process.env.NEXT_PUBLIC_API_DEV_URL
-          : process.env.NEXT_PUBLIC_API_URL;
-      const url = `${baseUrl}/${endpoints.GET_USER}`;
+  // useEffect(() => {
+  //   const getUser = async () => {
+  //     const baseUrl =
+  //       process.env.NODE_ENV === "development"
+  //         ? process.env.NEXT_PUBLIC_API_DEV_URL
+  //         : process.env.NEXT_PUBLIC_API_URL;
+  //     const url = `${baseUrl}/${endpoints.GET_USER}`;
 
-      try {
-        const userResponse = await fetch(url, {
-          method: "GET",
-        });
+  //     try {
+  //       const userResponse = await fetch(url, {
+  //         method: "GET",
+  //       });
 
-        const userData: UserDoc = await userResponse.json();
+  //       const userData: UserDoc = await userResponse.json();
 
-        setUser(userData);
-      } catch (error) {
-        setErrorMessage(
-          "Error Getting User In Data Bar",
-          getErrorMessage(error)
-        );
-        toggleErrorToaster();
-      }
-    };
+  //       setUser(userData);
+  //     } catch (error) {
+  //       setErrorMessage(
+  //         "Error Getting User In Data Bar",
+  //         getErrorMessage(error)
+  //       );
+  //       toggleErrorToaster();
+  //     }
+  //   };
 
-    if (userId.length === 0 || !userId) {
-      getUser();
-    }
-  }, [userId]);
+  //   if (userId.length === 0 || !userId) {
+  //     getUser();
+  //   }
+  // }, [userId]);
 
   return (
     <BarContainer>

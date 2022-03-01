@@ -41,11 +41,6 @@ const Dashboard: React.FC<DashboardViewProps> = ({ missions }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const url =
-    process.env.NODE_ENV === "production"
-      ? console.log("production")
-      : console.log("development");
-
   const resData = await fetch(
     `${process.env.API_URL}/${endpoints.GET_MISSIONS}`,
     {
