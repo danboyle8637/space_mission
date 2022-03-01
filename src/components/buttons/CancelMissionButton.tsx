@@ -57,7 +57,7 @@ export const CancelMissionButton: React.FC<ButtonProps> = ({ missionId }) => {
     const baseUrl =
       process.env.NODE_ENV === "development"
         ? process.env.NEXT_PUBLIC_API_DEV_URL
-        : process.env.API_URL;
+        : process.env.NEXT_PUBLIC_API_URL;
     const url = `${baseUrl}/${endpoints.CANCEL_MISSION}`;
 
     const cancelBody = {

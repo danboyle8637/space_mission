@@ -191,8 +191,6 @@ self.addEventListener("fetch", async (event) => {
       const resData = await clonedRes.json();
       const statsDoc = resData.statsDoc;
 
-      console.log(statsDoc);
-
       const testStats = {
         missionId: "mars",
         goals: statsDoc,
