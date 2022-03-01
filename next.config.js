@@ -7,7 +7,7 @@ module.exports = withPWA({
     disable: process.env.NODE_ENV === "development" ? true : false,
     dest: "public",
     dynamicStartUrlRedirect: "/dashboard",
-    runtimeCaching: [],
+    runtimeCaching: customRuntimeCache,
   },
   images: {
     domains: ["ik.imagekit.io", "imagedelivery.net"],

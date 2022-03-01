@@ -19,7 +19,7 @@ const Dashboard: React.FC<DashboardViewProps> = ({ missions }) => {
       const missionsRes = new Response(JSON.stringify(missions));
 
       caches.delete("missions").then((res) => {
-        if (res) {
+        if (!res) {
           caches.open("missions").then((cache) => {
             return cache.match(request).then((res) => {
               if (res) {
@@ -41,17 +41,14 @@ const Dashboard: React.FC<DashboardViewProps> = ({ missions }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const url =
+  const baseUrl =
     process.env.NODE_ENV === "production"
-      ? console.log("production")
-      : console.log("development");
+      ? process.env.API_URL
+      : process.env.API_DEV_URL;
 
-  const resData = await fetch(
-    `${process.env.API_URL}/${endpoints.GET_MISSIONS}`,
-    {
-      method: "GET",
-    }
-  );
+  const resData = await fetch(`${baseUrl}/${endpoints.GET_MISSIONS}`, {
+    method: "GET",
+  });
 
   const missionsArray: MissionDoc[] = await resData.json();
 
