@@ -5,12 +5,13 @@ import { DashboardView } from "../src/views/Dashboard";
 import { missionsStore } from "../lib/missionsStore";
 import { endpoints } from "../src/utils/endpoints";
 import { DashboardViewProps } from "../src/types/views";
+import { MissionDoc } from "../src/types";
 
 const Dashboard: React.FC<DashboardViewProps> = ({ missions }) => {
   const setMissions = missionsStore((state) => state.setMissions);
 
   useEffect(() => {
-    if (missions) {
+    if (missions.length > 0) {
       const request = new Request("/get-missions", {
         method: "GET",
       });
@@ -49,7 +50,7 @@ export const getStaticProps: GetStaticProps = async () => {
     method: "GET",
   });
 
-  const missionsArray = await resData.json();
+  const missionsArray: MissionDoc[] = await resData.json();
 
   return {
     props: {
