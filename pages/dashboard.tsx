@@ -52,6 +52,8 @@ export const getStaticProps: GetStaticProps = async () => {
 
   const missionsArray: MissionDoc[] = await resData.json();
 
+  console.log(missionsArray);
+
   return {
     props: {
       missions: missionsArray,
