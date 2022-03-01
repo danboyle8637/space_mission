@@ -17,15 +17,19 @@ const Dashboard: React.FC<DashboardViewProps> = ({ missions }) => {
 
       const missionsRes = new Response(JSON.stringify(missions));
 
-      caches.open("missions").then((cache) => {
-        return cache.match(request).then((res) => {
-          if (res) {
-            return;
-          } else {
-            cache.put(request, missionsRes);
-            return;
-          }
-        });
+      caches.delete("missions").then((res) => {
+        if (res) {
+          caches.open("missions").then((cache) => {
+            return cache.match(request).then((res) => {
+              if (res) {
+                return;
+              } else {
+                cache.put(request, missionsRes);
+                return;
+              }
+            });
+          });
+        }
       });
 
       setMissions(missions);

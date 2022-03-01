@@ -49,7 +49,7 @@ export const LoginForm = () => {
     event.preventDefault();
 
     const date = new Date();
-    const month = date.getMonth() + 1;
+    const month = date.getMonth() + 2;
     const day = date.getDate();
     const year = date.getFullYear();
     const expireDate = new Date(`${month}/${day}/${year}`);
@@ -68,8 +68,6 @@ export const LoginForm = () => {
 
         const data = await res.json();
         setUser(data.userDoc);
-
-        debugger;
 
         if (data) {
           push("/dashboard");

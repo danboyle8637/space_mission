@@ -29,7 +29,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // get the user doc from Cloudflare
 
   try {
-    const url = `${process.env.API_DEV_URL}/${endpoints.GET_USER}`;
+    const url = `${process.env.API_URL}/${endpoints.GET_USER}`;
 
     const userDoc = await fetch(url, {
       method: "GET",
