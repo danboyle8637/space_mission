@@ -14,9 +14,9 @@ let userDBVersion = 1;
 let userDB: IDBDatabase;
 let missionStatsDB: IDBDatabase;
 
-self.addEventListener("install", (event) => {});
+// self.addEventListener("install", (event) => {});
 
-self.addEventListener("activate", () => {});
+// self.addEventListener("activate", () => {});
 
 self.addEventListener("fetch", async (event) => {
   const headers = event.request.headers;
