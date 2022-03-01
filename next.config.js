@@ -1,4 +1,4 @@
-import customRuntimeCache from "./cache";
+const customRuntimeCache = require("./cache");
 
 const withPWA = require("next-pwa");
 
