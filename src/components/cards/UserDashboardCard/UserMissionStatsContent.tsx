@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { text16 } from "../../../styles/typography";
 import { GoalIndicator } from "../../cssDrawings/GoalIndicator";
 import { CircleGraph } from "../../svgs/CircleGraph";
-import { userStore } from "../../../../lib/userStore";
 import { missionStatsStore } from "../../../../lib/missionStatsStore";
 import { useCallback } from "react";
 
@@ -42,40 +41,33 @@ const StatusGraph = styled.div`
 `;
 
 export const UserMissionStatsContent = () => {
-  const activeMission = userStore((state) => state.activeMission);
-  const { missionId, isGoal1Complete, isGoal2Complete, isGoal3Complete } =
+  const { isGoal1Complete, isGoal2Complete, isGoal3Complete } =
     missionStatsStore((state) => ({
-      missionId: state.missionId,
-      isGoal1Complete: state.goals.isGoal1Complete,
-      isGoal2Complete: state.goals.isGoal2Complete,
-      isGoal3Complete: state.goals.isGoal3Complete,
+      isGoal1Complete: state.isGoal1Complete,
+      isGoal2Complete: state.isGoal2Complete,
+      isGoal3Complete: state.isGoal3Complete,
     }));
 
-  const isCurrentMission = activeMission === missionId;
-  const goal1 = isCurrentMission && isGoal1Complete;
-  const goal2 = isCurrentMission && isGoal2Complete;
-  const goal3 = isCurrentMission && isGoal3Complete;
-
   const calcPercentComplete = useCallback(() => {
-    if (goal1 && !goal2 && !goal3) {
+    if (isGoal1Complete && !isGoal2Complete && !isGoal3Complete) {
       return 3;
-    } else if (goal1 && goal2 && !goal3) {
+    } else if (isGoal1Complete && isGoal2Complete && !isGoal3Complete) {
       return 6;
-    } else if (goal1 && goal2 && goal3) {
+    } else if (isGoal1Complete && isGoal2Complete && isGoal3Complete) {
       return 10;
     } else {
       return 0;
     }
-  }, [goal1, goal2, goal3]);
+  }, [isGoal1Complete, isGoal2Complete, isGoal3Complete]);
 
   return (
     <Container>
       <StatsContainer>
         <Label>Mission Status:</Label>
         <DotsContainer>
-          <GoalIndicator isComplete={goal1} />
-          <GoalIndicator isComplete={goal2} />
-          <GoalIndicator isComplete={goal3} />
+          <GoalIndicator isComplete={isGoal1Complete} />
+          <GoalIndicator isComplete={isGoal2Complete} />
+          <GoalIndicator isComplete={isGoal3Complete} />
         </DotsContainer>
       </StatsContainer>
       <StatusGraph>

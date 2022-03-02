@@ -19,9 +19,10 @@ const BarContainer = styled.div`
 `;
 
 export const UserDataBar = () => {
-  const { userId, setUser } = userStore((state) => ({
+  const { userId, setUser, getUserId } = userStore((state) => ({
     userId: state.userId,
     setUser: state.setUser,
+    getUserId: state.getUserFromMagic,
   }));
 
   const { setErrorMessage, toggleErrorToaster } = networkStore((state) => ({
@@ -30,23 +31,20 @@ export const UserDataBar = () => {
   }));
 
   useEffect(() => {
-    const getUser = async () => {
+    const getUserFromKV = async () => {
       const baseUrl =
         process.env.NODE_ENV === "development"
           ? process.env.NEXT_PUBLIC_API_DEV_URL
           : process.env.NEXT_PUBLIC_API_URL;
       const url = `${baseUrl}/${endpoints.GET_USER}`;
-
-      // const headers: HeadersInit =
-      //   process.env.NODE_ENV === "development" ? { userId: `` } : {};
-
       try {
         const userResponse = await fetch(url, {
           method: "GET",
+          headers: {
+            userId: userId,
+          },
         });
-
         const userData: UserDoc = await userResponse.json();
-
         setUser(userData);
       } catch (error) {
         setErrorMessage(
@@ -57,8 +55,10 @@ export const UserDataBar = () => {
       }
     };
 
-    if (userId.length === 0 || !userId) {
-      getUser();
+    if (userId === "") {
+      getUserId();
+    } else {
+      getUserFromKV();
     }
   }, [userId]);
 

@@ -33,9 +33,11 @@ const MissionText = styled.p`
 `;
 
 export const StartMission: React.FC<StartMissionProps> = ({ missionId }) => {
-  const { activeMission, setUserDoc } = userStore((state) => ({
+  const { userId, activeMission, setUserDoc, getUserId } = userStore((state) => ({
+    userId: state.userId,
     activeMission: state.activeMission,
     setUserDoc: state.setUser,
+    getUserId: state.getUserFromMagic,
   }));
 
   const setStatsDoc = missionStatsStore((state) => state.setStatsDoc);
@@ -69,10 +71,15 @@ export const StartMission: React.FC<StartMissionProps> = ({ missionId }) => {
       };
 
       try {
+        if (userId === "") {
+          getUserId()
+        }
+
         const useDocResponse = await fetch(userUrl, {
           method: "POST",
           headers: {
             "should-update-user-cache": "true",
+            userId: userId,
           },
           body: JSON.stringify(userBody),
         });
@@ -80,7 +87,7 @@ export const StartMission: React.FC<StartMissionProps> = ({ missionId }) => {
         const createStatsDoc = await fetch(statsUrl, {
           method: "POST",
           headers: {
-            userId: "123456",
+            userId: userId,
           },
           body: JSON.stringify(statsBody),
         });

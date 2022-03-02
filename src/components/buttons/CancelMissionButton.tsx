@@ -43,7 +43,11 @@ const CancelButton = styled.button`
 `;
 
 export const CancelMissionButton: React.FC<ButtonProps> = ({ missionId }) => {
-  const setUser = userStore((state) => state.setUser);
+  const { userId, setUser, getUserId } = userStore((state) => ({
+    userId: state.userId,
+    setUser: state.setUser,
+    getUserId: state.getUserFromMagic,
+  }));
 
   const { setErrorMessage, toggleErrorToaster } = networkStore((state) => ({
     setErrorMessage: state.setErrorMessage,
@@ -65,10 +69,15 @@ export const CancelMissionButton: React.FC<ButtonProps> = ({ missionId }) => {
     };
 
     try {
+      if (userId === "") {
+        getUserId();
+      }
+
       const cancelRes = await fetch(url, {
         method: "POST",
         headers: {
           "should-update-user-cache": "true",
+          userId: userId,
         },
         body: JSON.stringify(cancelBody),
       });

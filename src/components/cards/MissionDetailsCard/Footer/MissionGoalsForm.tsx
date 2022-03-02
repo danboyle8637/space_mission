@@ -2,6 +2,8 @@ import { useEffect, useCallback } from "react";
 import styled from "styled-components";
 
 import { GoalCheckbox } from "../../../forms/GoalCheckbox";
+import { GoalCheckboxFake } from "../../../forms/GoalCheckboxFake";
+import { userStore } from "../../../../../lib/userStore";
 import { missionStatsStore } from "../../../../../lib/missionStatsStore";
 import { endpoints } from "../../../../utils/endpoints";
 import { MissionId } from "../../../../types";
@@ -19,79 +21,81 @@ const GoalForm = styled.form`
 `;
 
 export const MissionGoalsForm: React.FC<GoalsFormProps> = ({ missionId }) => {
-  const {
-    isGoal1Complete,
-    isGoal2Complete,
-    isGoal3Complete,
-    updateInputValue,
-    setStatsDoc,
-  } = missionStatsStore((state) => ({
-    isGoal1Complete: state.goals.isGoal1Complete,
-    isGoal2Complete: state.goals.isGoal2Complete,
-    isGoal3Complete: state.goals.isGoal3Complete,
-    updateInputValue: state.updateInputValue,
-    setStatsDoc: state.setStatsDoc,
+  const { userId, activeMission, getUserId } = userStore((state) => ({
+    userId: state.userId,
+    activeMission: state.activeMission,
+    getUserId: state.getUserFromMagic,
   }));
 
-  const updateStatsDoc = useCallback(() => {
-    const updateMissionStats = async () => {
-      const baseUrl =
-        process.env.NODE_ENV === "development"
-          ? process.env.NEXT_PUBLIC_API_DEV_URL
-          : process.env.NEXT_PUBLIC_API_URL;
-      const url = `${baseUrl}/${endpoints.HANDLE_STATS_DOC}/update-stats-doc`;
-
-      const updateStatsBody = {
-        missionId: missionId,
-        goals: {
-          isGoal1Complete: isGoal1Complete,
-          isGoal2Complete: isGoal2Complete,
-          isGoal3Complete: isGoal3Complete,
-        },
-      };
-
-      const statsRes = await fetch(url, {
-        method: "POST",
-        body: JSON.stringify(updateStatsBody),
-      });
-
-      const statsData = await statsRes.json();
-      setStatsDoc({
-        missionId: missionId,
-        goals: statsData.statsDoc,
-      });
-    };
-
-    updateMissionStats();
-  }, [isGoal1Complete, isGoal2Complete, isGoal3Complete]);
+  const { isGoal1Complete, isGoal2Complete, isGoal3Complete, setStatsDoc } =
+    missionStatsStore((state) => ({
+      isGoal1Complete: state.isGoal1Complete,
+      isGoal2Complete: state.isGoal2Complete,
+      isGoal3Complete: state.isGoal3Complete,
+      setStatsDoc: state.setStatsDoc,
+    }));
 
   useEffect(() => {
-    if (isGoal1Complete) {
-      updateStatsDoc();
+    if (userId === "") {
+      getUserId();
     }
-  }, [isGoal1Complete, isGoal2Complete, isGoal3Complete]);
+  }, [userId === ""]);
+
+  const handleUpdateMissionStats = async (name: string, value: boolean) => {
+    const baseUrl =
+      process.env.NODE_ENV === "development"
+        ? process.env.NEXT_PUBLIC_API_DEV_URL
+        : process.env.NEXT_PUBLIC_API_URL;
+    const url = `${baseUrl}/${endpoints.HANDLE_STATS_DOC}/update-stats-doc`;
+
+    if (userId === "") {
+      getUserId();
+    }
+
+    const updateStatsBody = {
+      missionId: missionId,
+      goals: {
+        isGoal1Complete: name === "missionGoal1" ? value : isGoal1Complete,
+        isGoal2Complete: name === "missionGoal2" ? value : isGoal2Complete,
+        isGoal3Complete: name === "missionGoal3" ? value : isGoal3Complete,
+      },
+    };
+
+    const statsRes = await fetch(url, {
+      method: "POST",
+      headers: {
+        userId: userId,
+      },
+      body: JSON.stringify(updateStatsBody),
+    });
+
+    const statsData = await statsRes.json();
+    setStatsDoc({
+      ...statsData.statsDoc,
+    });
+  };
 
   return (
     <GoalForm>
-      <GoalCheckbox
+      <GoalCheckboxFake
         name="missionGoal1"
         label="Complete Goal 1"
         isChecked={isGoal1Complete}
-        updateInputValue={updateInputValue}
+        handleUpdateMissionStats={handleUpdateMissionStats}
         isDisabled={false}
       />
-      <GoalCheckbox
+      <GoalCheckboxFake
         name="missionGoal2"
         label="Complete Goal 2"
         isChecked={isGoal2Complete}
-        updateInputValue={updateInputValue}
+        handleUpdateMissionStats={handleUpdateMissionStats}
         isDisabled={!isGoal1Complete}
       />
-      <GoalCheckbox
+      <GoalCheckboxFake
         name="missionGoal3"
         label="Complete Goal 3"
         isChecked={isGoal3Complete}
-        updateInputValue={updateInputValue}
+        handleUpdateMissionStats={handleUpdateMissionStats}
         isDisabled={!isGoal1Complete || !isGoal2Complete}
       />
     </GoalForm>

@@ -35,9 +35,9 @@ const ButtonContainer = styled.div`
 export const Footer: React.FC<FooterProps> = ({ isActive, isHovering }) => {
   const { isGoal1Complete, isGoal2Complete, isGoal3Complete } =
     missionStatsStore((state) => ({
-      isGoal1Complete: state.goals.isGoal1Complete,
-      isGoal2Complete: state.goals.isGoal2Complete,
-      isGoal3Complete: state.goals.isGoal3Complete,
+      isGoal1Complete: state.isGoal1Complete,
+      isGoal2Complete: state.isGoal2Complete,
+      isGoal3Complete: state.isGoal3Complete,
     }));
 
   const goal1 = isActive && isGoal1Complete;

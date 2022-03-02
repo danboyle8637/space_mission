@@ -13,7 +13,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const bodyData = req.body;
   const body = JSON.parse(bodyData);
   const emailAddress = body.emailAddress;
-  const date = body.date;
 
   if (emailAddress !== process.env.TEST_USER_EMAIL) {
     return res.status(400).json({
@@ -28,8 +27,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // get the user doc from Cloudflare
 
+  const baseUrl =
+    process.env.NODE_ENV === "development"
+      ? process.env.API_DEV_URL
+      : process.env.API_URL;
+
   try {
-    const url = `${process.env.API_URL}/${endpoints.GET_USER}`;
+    const url = `${baseUrl}/${endpoints.GET_USER}`;
 
     const userDoc = await fetch(url, {
       method: "GET",
@@ -40,11 +44,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     const userData = await userDoc.json();
 
-    // create an http session cookie and store the userId in there
-    res.setHeader(
-      "Set-Cookie",
-      `userId=${userId}; Path=/; SameSite=None; Secure; HttpOnly; Expires=${date};`
-    );
     // send back user doc with cookie
     return res.status(200).json({
       message: "Success logging in",

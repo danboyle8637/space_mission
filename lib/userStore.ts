@@ -10,6 +10,7 @@ type UserState = {
   callsign: string;
   avatar: string;
   setUser: (user: UserDoc) => void;
+  getUserFromMagic: () => void;
 };
 
 export const userStore = create<UserState>((set: SetState<UserState>) => ({
@@ -20,8 +21,24 @@ export const userStore = create<UserState>((set: SetState<UserState>) => ({
   callsign: "",
   avatar: "",
   setUser: (user) =>
+    set((state) => {
+      return {
+        ...state,
+        ...user,
+      };
+    }),
+  getUserFromMagic: async () => {
+    // get token from Magic
+
+    const userIdRes = await fetch("/api/get-userId", {
+      method: "GET",
+    });
+
+    const userIdData = await userIdRes.json();
+
     set((state) => ({
       ...state,
-      ...user,
-    })),
+      userId: userIdData.userId,
+    }));
+  },
 }));
