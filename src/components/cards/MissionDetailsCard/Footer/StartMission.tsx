@@ -33,12 +33,14 @@ const MissionText = styled.p`
 `;
 
 export const StartMission: React.FC<StartMissionProps> = ({ missionId }) => {
-  const { userId, activeMission, setUserDoc, getUserId } = userStore((state) => ({
-    userId: state.userId,
-    activeMission: state.activeMission,
-    setUserDoc: state.setUser,
-    getUserId: state.getUserFromMagic,
-  }));
+  const { userId, activeMission, setUserDoc, getUserId } = userStore(
+    (state) => ({
+      userId: state.userId,
+      activeMission: state.activeMission,
+      setUserDoc: state.setUser,
+      getUserId: state.getUserFromMagic,
+    })
+  );
 
   const setStatsDoc = missionStatsStore((state) => state.setStatsDoc);
 
@@ -72,7 +74,7 @@ export const StartMission: React.FC<StartMissionProps> = ({ missionId }) => {
 
       try {
         if (userId === "") {
-          getUserId()
+          getUserId();
         }
 
         const useDocResponse = await fetch(userUrl, {
@@ -109,8 +111,7 @@ export const StartMission: React.FC<StartMissionProps> = ({ missionId }) => {
 
         const goals = statsData.statsDoc;
         setStatsDoc({
-          missionId: missionId,
-          goals: goals,
+          ...goals,
         });
       } catch (error) {
         setErrorMessage("Start Mission Error", getErrorMessage(error));

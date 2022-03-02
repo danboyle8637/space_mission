@@ -1,7 +1,6 @@
 import { useEffect, useCallback } from "react";
 import styled from "styled-components";
 
-import { GoalCheckbox } from "../../../forms/GoalCheckbox";
 import { GoalCheckboxFake } from "../../../forms/GoalCheckboxFake";
 import { userStore } from "../../../../../lib/userStore";
 import { missionStatsStore } from "../../../../../lib/missionStatsStore";

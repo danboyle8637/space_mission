@@ -5,6 +5,7 @@ import { endpoints } from "../../utils/endpoints";
 import { userStore } from "../../../lib/userStore";
 import { MissionId } from "../../types";
 import { networkStore } from "../../../lib/networkStore";
+import { missionStatsStore } from "../../../lib/missionStatsStore";
 import { getErrorMessage } from "../../utils/utilityFunctions";
 
 interface ButtonProps {
@@ -49,6 +50,8 @@ export const CancelMissionButton: React.FC<ButtonProps> = ({ missionId }) => {
     getUserId: state.getUserFromMagic,
   }));
 
+  const setStatsDoc = missionStatsStore((state) => state.setStatsDoc);
+
   const { setErrorMessage, toggleErrorToaster } = networkStore((state) => ({
     setErrorMessage: state.setErrorMessage,
     toggleErrorToaster: state.toggleErrorToaster,
@@ -85,6 +88,11 @@ export const CancelMissionButton: React.FC<ButtonProps> = ({ missionId }) => {
       const cancelData = await cancelRes.json();
       const userDoc = cancelData.userDoc;
       setUser(userDoc);
+      setStatsDoc({
+        isGoal1Complete: false,
+        isGoal2Complete: false,
+        isGoal3Complete: false,
+      });
     } catch (error) {
       setErrorMessage("Cancel Mission Call", getErrorMessage(error));
       toggleErrorToaster();
