@@ -146,6 +146,7 @@ export const TextInput: React.FC<UnderlineInput1Props> = ({
       <InputField
         type={inputType}
         id={inputName}
+        autoComplete="off"
         name={inputName}
         placeholder={placeholder}
         value={value}
