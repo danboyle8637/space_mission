@@ -37,6 +37,9 @@ export const UserDataBar = () => {
           : process.env.NEXT_PUBLIC_API_URL;
       const url = `${baseUrl}/${endpoints.GET_USER}`;
 
+      // const headers: HeadersInit =
+      //   process.env.NODE_ENV === "development" ? { userId: `` } : {};
+
       try {
         const userResponse = await fetch(url, {
           method: "GET",

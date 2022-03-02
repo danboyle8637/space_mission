@@ -54,19 +54,19 @@ self.addEventListener("fetch", async (event) => {
       break;
     }
     case "/get-user": {
-      event.respondWith(
+      return event.respondWith(
         caches.open("user-doc").then((cache) => {
-          return cache.match(event.request).then((res) => {
+          const customUserReq = new Request("get-user", { method: "GET" });
+          return cache.match(customUserReq).then((res) => {
             if (res) {
               return res;
             } else {
               return fetch(event.request).then(async (res) => {
-                const clonedRes = res.clone();
-                cache.put(event.request, clonedRes);
+                cache.put(customUserReq, res);
                 return res;
               });
             }
-          }) as PromiseLike<Response>;
+          });
         })
       );
       break;
@@ -115,30 +115,34 @@ self.addEventListener("fetch", async (event) => {
         return event.respondWith(response);
       }
 
-      return fetch(event.request).then(async (res) => {
-        const clonedRes = res.clone();
+      if (event.request.method === "OPTIONS") {
+        return event.respondWith(fetch(event.request));
+      } else {
+        return fetch(event.request).then(async (res) => {
+          const clonedRes = res.clone();
 
-        // Create new response
-        const resData = await clonedRes.json();
-        const userDoc = resData.userDoc;
+          // Create new response
+          const resData = await clonedRes.json();
+          const userDoc = resData.userDoc;
 
-        const newRes = new Response(JSON.stringify(userDoc));
+          const newRes = new Response(JSON.stringify(userDoc));
 
-        const newReq = new Request("/get-user", {
-          method: "GET",
+          const newReq = new Request("/get-user", {
+            method: "GET",
+          });
+
+          caches.delete("user-doc").then((res) => {
+            if (res) {
+              caches.open("user-doc").then((cache) => {
+                cache.put(newReq, newRes);
+              });
+              return res;
+            } else {
+              return res;
+            }
+          });
         });
-
-        caches.delete("user-doc").then((res) => {
-          if (res) {
-            caches.open("user-doc").then((cache) => {
-              cache.put(newReq, newRes);
-            });
-            return res;
-          } else {
-            return res;
-          }
-        });
-      });
+      }
       break;
     }
     case "/cancel-mission": {
@@ -151,30 +155,34 @@ self.addEventListener("fetch", async (event) => {
         return event.respondWith(response);
       }
 
-      return fetch(event.request).then(async (res) => {
-        const clonedRes = res.clone();
+      if (event.request.method === "OPTIONS") {
+        return event.respondWith(fetch(event.request));
+      } else {
+        return fetch(event.request).then(async (res) => {
+          const clonedRes = res.clone();
 
-        // Create new response
-        const resData = await clonedRes.json();
-        const userDoc = resData.userDoc;
+          // Create new response
+          const resData = await clonedRes.json();
+          const userDoc = resData.userDoc;
 
-        const newRes = new Response(JSON.stringify(userDoc));
+          const newRes = new Response(JSON.stringify(userDoc));
 
-        const newReq = new Request("/get-user", {
-          method: "GET",
+          const newReq = new Request("/get-user", {
+            method: "GET",
+          });
+
+          caches.delete("user-doc").then((res) => {
+            if (res) {
+              caches.open("user-doc").then((cache) => {
+                cache.put(newReq, newRes);
+              });
+              return res;
+            } else {
+              return res;
+            }
+          });
         });
-
-        caches.delete("user-doc").then((res) => {
-          if (res) {
-            caches.open("user-doc").then((cache) => {
-              cache.put(newReq, newRes);
-            });
-            return res;
-          } else {
-            return res;
-          }
-        });
-      });
+      }
       break;
     }
     case "/handle-mission-stats/create-stats-doc": {
