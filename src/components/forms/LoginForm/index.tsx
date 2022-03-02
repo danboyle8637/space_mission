@@ -52,7 +52,7 @@ export const LoginForm = () => {
     const month = date.getMonth() + 2;
     const day = date.getDate();
     const year = date.getFullYear();
-    const expireDate = new Date(`${month}/${day}/${year}`);
+    const expireDate = new Date(`${month}/${day}/${year}`).toUTCString();
 
     const body = {
       emailAddress: emailAddress.value,
