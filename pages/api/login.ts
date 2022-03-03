@@ -14,12 +14,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const body = JSON.parse(bodyData);
   const emailAddress = body.emailAddress;
 
-  if (emailAddress !== process.env.TEST_USER_EMAIL) {
-    return res.status(400).json({
-      message: "You are not allowed to login",
-    });
-  }
-
   // Fake verify token... this would be done through Magic
 
   // get userId from Magic... but here our fake one
@@ -33,6 +27,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       : process.env.API_URL;
 
   try {
+    if (emailAddress !== process.env.TEST_USER_EMAIL) {
+      console.log("Thow an error");
+      throw new Error("Bad Request");
+    }
+
     const url = `${baseUrl}/${endpoints.GET_USER}`;
 
     const userDoc = await fetch(url, {

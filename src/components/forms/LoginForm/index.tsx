@@ -68,13 +68,9 @@ export const LoginForm = () => {
 
         const data = await res.json();
 
-        if (res.status === 400) {
-          push("/");
-        }
-
         setUser(data.userDoc);
 
-        if (data) {
+        if (data && res.ok) {
           push("/dashboard");
         }
       };
@@ -83,6 +79,7 @@ export const LoginForm = () => {
         logUserIn();
       }
     } catch (error) {
+      console.log("In error handler");
       setErrorMessage("Login Call Error", getErrorMessage(error));
       toggleErrorToaster();
       push("/");
