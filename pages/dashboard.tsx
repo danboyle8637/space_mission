@@ -1,14 +1,25 @@
 import { useEffect } from "react";
 import { GetStaticProps } from "next";
+import { useRouter } from "next/router";
 
 import { DashboardView } from "../src/views/Dashboard";
 import { missionsStore } from "../lib/missionsStore";
+import { userStore } from "../lib/userStore";
 import { endpoints } from "../src/utils/endpoints";
 import { DashboardViewProps } from "../src/types/views";
 import { MissionDoc } from "../src/types";
 
 const Dashboard: React.FC<DashboardViewProps> = ({ missions }) => {
   const setMissions = missionsStore((state) => state.setMissions);
+  const userId = userStore((state) => state.userId);
+
+  const { push } = useRouter();
+
+  useEffect(() => {
+    if (!userId || userId === "") {
+      push("/");
+    }
+  }, [userId]);
 
   useEffect(() => {
     if (missions.length > 0) {
