@@ -14,7 +14,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const body = JSON.parse(bodyData);
   const emailAddress = body.emailAddress;
 
-  if (emailAddress === process.env.TEST_USER_ID) {
+  if (emailAddress !== process.env.TEST_USER_EMAIL) {
     return res.status(400).json({
       message: "You are not allowed to login",
     });
